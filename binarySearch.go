@@ -1,14 +1,19 @@
-package main
+package algorithm
 
-func search(arr []int,des int){
-	middle := len(arr)/2
-	println(middle)
+func search(arr []int, des int, min int, max int) int {
+	idx := min + (max-min)/2
+	if (idx == min || idx == max) && arr[idx] != des {
+		return -1
+	}
+	if arr[idx] == des {
+		return idx
+	} else if arr[idx] > des {
+		return search(arr, des, min, idx)
+	} else {
+		return search(arr, des, idx, max)
+	}
 }
 
-func main(){
-	sl := make([]int,9)
-	for i :=0;i<len(sl);i++ {
-		sl[i]=i;
-	}
-	search(sl,4)
+func Search(arr []int, des int) int {
+	return search(arr, des, 0, len(arr))
 }
