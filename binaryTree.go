@@ -1,12 +1,13 @@
 package algorithm
 
-import (
-	"fmt"
-	"math"
-)
-
 type Comparable interface {
 	CompareTo(Comparable) int
+}
+
+type Node interface {
+	Left() Node
+	Right() Node
+	Value() Comparable
 }
 
 type Tree struct {
@@ -76,89 +77,25 @@ func searchRange(min Comparable, max Comparable, node *TreeNode, res []Comparabl
 	return res
 }
 
+func (node *TreeNode) Left() Node {
+	return node.left
+}
+
+func (node *TreeNode) Right() Node {
+	return node.right
+}
+
+func (node *TreeNode) Value() Comparable {
+	return node.value
+}
+
 //打印树
 func (this *Tree) Print() {
 	maxLevel := maxLevel(this.root)
-	var nodes []*TreeNode = []*TreeNode{this.root}
-	printNode(nodes, 1, maxLevel)
-}
-
-func printNode(nodes []*TreeNode, level int, maxLevel int) {
-	if len(nodes) == 0 || isAllElementsNull(nodes) {
-		return
-	}
-	var floor int = maxLevel - level
-	var endgeLines = int(math.Pow(2.0, float64(floor-1)))
-	var firstSpaces = int(math.Pow(2.0, float64(floor)) - 1)
-	var betweenSpaces = int(math.Pow(2.0, float64(floor+1)) - 1)
-	printSpace(firstSpaces)
-	var newNodes []*TreeNode
-	for _, node := range nodes {
-		if node == nil {
-			newNodes = append(newNodes, nil)
-			newNodes = append(newNodes, nil)
-			fmt.Print(" ")
-		} else {
-			newNodes = append(newNodes, node.left)
-			newNodes = append(newNodes, node.right)
-			fmt.Print(node.value)
-		}
-		printSpace(betweenSpaces)
-	}
-	fmt.Println("")
-
-	for i := 1; i <= endgeLines; i++ {
-		for j := 0; j < len(nodes); j++ {
-			printSpace(firstSpaces - i)
-			if nodes[j] == nil {
-				printSpace(endgeLines + endgeLines + i + 1)
-				continue
-			}
-			if nodes[j].left != nil {
-				fmt.Print("/")
-			} else {
-				printSpace(1)
-			}
-			printSpace(i + i - 1)
-			if nodes[j].right != nil {
-				fmt.Print("\\")
-			} else {
-				printSpace(1)
-			}
-			printSpace(endgeLines + endgeLines - i)
-		}
-		fmt.Println("")
-	}
-	printNode(newNodes, level+1, maxLevel)
+	var nodes []Node = []Node{this.root}
+	PrintNode(nodes, 1, maxLevel)
 }
 
 func (this *Tree) Level() int {
 	return maxLevel(this.root)
-}
-
-func maxLevel(tn *TreeNode) int {
-	if tn == nil {
-		return 0
-	}
-	leftLevel := maxLevel(tn.left)
-	rightLevel := maxLevel(tn.right)
-	if leftLevel > rightLevel {
-		return leftLevel + 1
-	}
-	return rightLevel + 1
-}
-
-func printSpace(count int) {
-	for i := 0; i < count; i++ {
-		fmt.Print(" ")
-	}
-}
-
-func isAllElementsNull(nodes []*TreeNode) bool {
-	for _, v := range nodes {
-		if v != nil {
-			return false
-		}
-	}
-	return true
 }
