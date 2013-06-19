@@ -7,6 +7,7 @@ func TestSearch(t *testing.T) {
 	for i := 4; i < len(sl)+4; i++ {
 		sl[i-4] = i
 	}
+	t.Log(sl)
 	if Search(sl, 4) != 0 {
 		t.Error("index start failed")
 	} else if Search(sl, 23) != 19 {

@@ -1,19 +1,27 @@
 package algorithm
 
-func search(arr []int, des int, min int, max int) int {
-	idx := min + (max-min)/2
-	if (idx == min || idx == max) && arr[idx] != des {
+func Search(arr []int, des int) int {
+	length := len(arr)
+	if length == 0 {
 		return -1
 	}
-	if arr[idx] == des {
-		return idx
-	} else if arr[idx] > des {
-		return search(arr, des, min, idx)
-	} else {
-		return search(arr, des, idx, max)
+	middle, low, high := 0, 0, length-1
+	if arr[low] == des {
+		return low
 	}
-}
-
-func Search(arr []int, des int) int {
-	return search(arr, des, 0, len(arr))
+	if arr[high] == des {
+		return high
+	}
+	for low <= high {
+		middle = low + (high-low)/2
+		if arr[middle] == des {
+			return middle
+		}
+		if arr[middle] > des {
+			high = middle - 1
+		} else {
+			low = middle + 1
+		}
+	}
+	return -1
 }
